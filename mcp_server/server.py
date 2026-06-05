@@ -7,6 +7,7 @@ TrendRadar MCP Server - FastMCP 2.0 实现
 
 import asyncio
 import json
+import sys
 from typing import List, Optional, Dict, Union
 
 from fastmcp import FastMCP
@@ -1131,6 +1132,17 @@ def run_server(
     """
     # 初始化工具实例
     _get_tools(project_root)
+
+    # 如果是 stdio 模式，所有的日志输出必须重定向到 stderr
+    # 否则会干扰 JSON-RPC 通信
+    if transport == 'stdio':
+        import builtins
+        _orig_print = builtins.print
+        def builtins_print(*args, **kwargs):
+            if 'file' not in kwargs:
+                kwargs['file'] = sys.stderr
+            _orig_print(*args, **kwargs)
+        builtins.print = builtins_print
 
     # 打印启动信息
     print()
