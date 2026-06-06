@@ -1,0 +1,8 @@
+--- .github/workflows/crawler.yml
++++ .github/workflows/crawler.yml
+@@ -107,3 +107,5 @@
+           S3_ENDPOINT_URL: ${{ secrets.S3_ENDPOINT_URL }}
+           S3_REGION: ${{ secrets.S3_REGION }}
+           GITHUB_ACTIONS: true
++          # We are setting proxy_url and api_base to empty in GA since the local endpoints are not reachable.
++          # For RSS URLs that use host.docker.internal, they should be configured differently if you want them to run in GA.
